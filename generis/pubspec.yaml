@@ -1,0 +1,14 @@
+name: generis
+description: generis
+version: 0.0.1
+homepage: https://github.com/smotastic/smartstruct
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dev_dependencies:
+  pedantic: ^1.10.0
+dependencies:
+  analyzer: ^1.7.1
+  build: ^2.0.2
+  source_gen: ^1.0.1
+  code_builder: ^4.0.0

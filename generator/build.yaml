@@ -1,0 +1,8 @@
+builders:
+  mapper:
+    import: "package:generis_generator/integrations/build.dart"
+    builder_factories: ["generisBuilder"]
+    build_extensions: { ".dart": ["g.dart"] }
+    auto_apply: dependents
+    build_to: source
+    # applies_builders: ["source_gen|combining_builder"]
