@@ -38,6 +38,12 @@ class SmartdataGenerator extends GeneratorForAnnotation<SmartdataInit> {
     final build = <Spec>[];
     for (final type in typeList) {
       final original = type.toTypeValue()!.element!;
+      if (original is! ClassElement) {
+        throw InvalidGenerationSourceError(
+            '${element.displayName} is not a class and a generator cannot be created for this',
+            element: element,
+            todo: 'Only add classes to the generatable classes');
+      }
       build.add(buildClass(original));
     }
 
