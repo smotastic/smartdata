@@ -36,20 +36,21 @@ class SmartdataGenerator extends GeneratorForAnnotation<SmartdataInit> {
     final config = readConfig(annotation, element);
     final typeList = config['classesToGenerate'] as List<DartObject>;
     final build = <Spec>[];
-    for (final type in typeList) {
-      final original = type.toTypeValue()!.element!;
-      if (original is! ClassElement) {
+    final classesToGenerate =
+        typeList.map((type) => type.toTypeValue()!.element!).toList();
+    for (final clazz in classesToGenerate) {
+      if (clazz is! ClassElement) {
         throw InvalidGenerationSourceError(
             '${element.displayName} is not a class and a generator cannot be created for this',
             element: element,
             todo: 'Only add classes to the generatable classes');
       }
-      build.add(buildClass(original));
+      build.add(buildClass(clazz));
     }
 
     build.add(buildInit());
 
-    final lib = generateLibrary(build);
+    final lib = generateLibrary(build, classesToGenerate);
     final emitter = DartEmitter(
       allocator: Allocator.simplePrefixing(),
       orderDirectives: true,

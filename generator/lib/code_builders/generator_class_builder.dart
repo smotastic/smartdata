@@ -3,6 +3,8 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart';
 
 Class buildClass(ClassElement clazz) {
+  print(clazz.librarySource.fullName);
+  print(clazz.library.identifier);
   return Class(
     (b) => b
       ..name = '${clazz.displayName}Generator'

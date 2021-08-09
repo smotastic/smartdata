@@ -5,6 +5,7 @@
 // **************************************************************************
 
 import 'package:smartdata/smartdata.dart';
+import 'package:smartdata_example/simple.dart';
 
 class SimpleGenerator extends Generator {
   @override
