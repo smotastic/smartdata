@@ -21,8 +21,12 @@ class Smartdata {
 }
 
 abstract class Generator<T> {
-  // final _strings = ['bulbasaur', 'ivysaur', 'venosaur'];
-  // final _ints = [1, 2, 3, 4];
+  final _strings = ['bulbasaur', 'ivysaur', 'venosaur'];
+  final _ints = [1, 2, 3, 4];
   final _random = new Random();
+
+  String get randomString => _strings[_random.nextInt(_strings.length)];
+  int get randomInt => _ints[_random.nextInt(_ints.length)];
+
   T generateRandom();
 }

@@ -8,7 +8,10 @@ import 'package:smartdata/smartdata.dart';
 
 class SimpleGenerator extends Generator {
   @override
-  Simple generateRandom() {}
+  Simple generateRandom() {
+    final simple = Simple(randomInt, randomString);
+    return simple;
+  }
 }
 
 $init() {}
