@@ -1,4 +1,4 @@
-name: generis_example
+name: smartdata_example
 description: example
 version: 1.0.1
 # homepage: https://www.example.com
@@ -7,9 +7,9 @@ environment:
 
 publish_to: none
 dependencies:
-  generis:
-    path: ../generis
+  smartdata:
+    path: ../smartdata
 dev_dependencies:
   build_runner: ^2.0.4
-  generis_generator:
+  smartdata_generator:
     path: ../generator

@@ -1,10 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// GenerisGenerator
+// SmartdataGenerator
 // **************************************************************************
 
-import 'package:generis/generis.dart';
+import 'package:smartdata/smartdata.dart';
 
 class SimpleGenerator extends Generator {}
 

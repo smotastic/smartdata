@@ -2,20 +2,21 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
-import 'package:generis/generis.dart';
-import 'package:generis_generator/code_builders/generator_class_builder.dart';
-import 'package:generis_generator/code_builders/init_builder.dart';
-import 'package:generis_generator/code_builders/library_builder.dart';
+import 'package:smartdata/smartdata.dart';
+import 'package:smartdata_generator/code_builders/generator_class_builder.dart';
+import 'package:smartdata_generator/code_builders/init_builder.dart';
+import 'package:smartdata_generator/code_builders/library_builder.dart';
+
 import 'package:source_gen/source_gen.dart';
 
 /// Codegenerator to generate implemented mapping classes
-class GenerisGenerator extends GeneratorForAnnotation<GenerisInit> {
+class SmartdataGenerator extends GeneratorForAnnotation<SmartdataInit> {
   static Map<String, dynamic> readConfig(
       ConstantReader annotation, Element element) {
-    final generisAnno =
+    final smartdataAnno =
         element.metadata.first.element!.enclosingElement as ClassElement;
     final config = <String, dynamic>{};
-    generisAnno.fields.forEach((field) {
+    smartdataAnno.fields.forEach((field) {
       final configField = annotation.read(field.name).literalValue;
       config.putIfAbsent(field.name, () => configField);
     });

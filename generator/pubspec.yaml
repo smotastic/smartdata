@@ -1,7 +1,7 @@
-name: generis_generator
-description: Generis
+name: smartdata_generator
+description: Smart-Data Generator
 version: 0.0.1
-homepage: https://github.com/smotastic/smartstruct
+homepage: https://github.com/smotastic/smartdata
 environment:
   sdk: ">=2.12.0 <3.0.0"
 publish_to: none
@@ -14,6 +14,6 @@ dependencies:
   build: ^2.0.2
   source_gen: ^1.0.1
   code_builder: ^4.0.0
-  generis:
-    path: '../generis'
+  smartdata:
+    path: '../smartdata'
   path: ^1.8.0

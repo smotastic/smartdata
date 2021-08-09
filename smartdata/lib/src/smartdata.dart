@@ -1,7 +1,7 @@
 import 'dart:math';
 
-class Generis {
-  static Generis get I => Generis();
+class Smartdata {
+  static Smartdata get I => Smartdata();
 
   List<T> get<T>(int amount) {
     final gen = _generators[T]!;

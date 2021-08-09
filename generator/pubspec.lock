@@ -169,13 +169,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  generis:
-    dependency: "direct main"
-    description:
-      path: "../generis"
-      relative: true
-    source: path
-    version: "0.0.1"
   glob:
     dependency: transitive
     description:
@@ -337,6 +330,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  smartdata:
+    dependency: "direct main"
+    description:
+      path: "../smartdata"
+      relative: true
+    source: path
+    version: "0.0.1"
   source_gen:
     dependency: "direct main"
     description:

@@ -1,7 +1,7 @@
 builders:
   mapper:
-    import: "package:generis_generator/integrations/build.dart"
-    builder_factories: ["generisBuilder"]
+    import: "package:smartdata_generator/integrations/build.dart"
+    builder_factories: ["smartdataBuilder"]
     build_extensions: { ".dart": ["g.dart"] }
     auto_apply: dependents
     build_to: source
