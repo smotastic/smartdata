@@ -26,13 +26,6 @@ class SmartdataGenerator extends GeneratorForAnnotation<SmartdataInit> {
   @override
   dynamic generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
-    // if (element is! ClassElement) {
-    //   throw InvalidGenerationSourceError(
-    //       '${element.displayName} is not a class and cannot be annotated with @Mapper',
-    //       element: element,
-    //       todo: 'Add Mapper annotation to a class');
-    // }
-
     final config = readConfig(annotation, element);
     final typeList = config['classesToGenerate'] as List<DartObject>;
     final build = <Spec>[];
@@ -48,7 +41,7 @@ class SmartdataGenerator extends GeneratorForAnnotation<SmartdataInit> {
       build.add(buildClass(clazz));
     }
 
-    build.add(buildInit());
+    build.add(buildInit(classesToGenerate));
 
     final lib = generateLibrary(build, classesToGenerate);
     final emitter = DartEmitter(

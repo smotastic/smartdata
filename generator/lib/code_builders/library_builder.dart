@@ -3,8 +3,9 @@ import 'package:code_builder/code_builder.dart';
 
 Library generateLibrary(List<Spec> body, List<Element> classesToGenerate) {
   final imports = classesToGenerate
-      .map((clazz) => Directive.import(clazz.library!.identifier))
-      .toList();
+      .map((clazz) => clazz.library!.identifier)
+      .toSet()
+      .map((e) => Directive.import(e));
 
   final lib = Library(
     (b) => b

@@ -15,4 +15,6 @@ class SimpleGenerator extends Generator {
   }
 }
 
-$init() {}
+$init() {
+  Smartdata.put(Simple, SimpleGenerator());
+}
