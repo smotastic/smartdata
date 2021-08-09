@@ -3,6 +3,9 @@ import 'package:build/src/builder/build_step.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:generis/generis.dart';
+import 'package:generis_generator/code_builders/generator_class_builder.dart';
+import 'package:generis_generator/code_builders/init_builder.dart';
+import 'package:generis_generator/code_builders/library_builder.dart';
 import 'package:source_gen/source_gen.dart';
 
 /// Codegenerator to generate implemented mapping classes
@@ -32,26 +35,19 @@ class GenerisGenerator extends GeneratorForAnnotation<GenerisInit> {
     final config = readConfig(annotation, element);
     final typeList = config['classesToGenerate'] as List<DartObject>;
     final build = <Spec>[];
-    for (DartObject type in typeList) {
-      print(type.toTypeValue()!.element!.displayName);
-      build.add(Class((b) =>
-          b..name = '${type.toTypeValue()!.element!.displayName}Generator'));
+    for (final type in typeList) {
+      final original = type.toTypeValue()!.element!;
+      build.add(buildClass(original));
     }
-    final mapperImpl = Method((b) => b
-      ..name = '\$init'
-      ..body = _generateBody());
-    build.add(mapperImpl);
 
-    final emitter = DartEmitter();
-    String inti = "";
-    return build.fold(inti,
-        (value, element) => (value as String) + '${element.accept(emitter)}');
+    build.add(buildInit());
 
-    // return '${mapperImpl.accept(emitter)}';
-  }
-
-  Code _generateBody() {
-    final blockBuilder = BlockBuilder();
-    return blockBuilder.build();
+    final lib = generateLibrary(build);
+    final emitter = DartEmitter(
+      allocator: Allocator.simplePrefixing(),
+      orderDirectives: true,
+      useNullSafetySyntax: true,
+    );
+    return '${lib.accept(emitter)}';
   }
 }

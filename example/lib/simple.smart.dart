@@ -1,11 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'simple.dart';
-
 // **************************************************************************
 // GenerisGenerator
 // **************************************************************************
 
-class SimpleGenerator {}
+import 'package:generis/generis.dart';
+
+class SimpleGenerator extends Generator {}
 
 $init() {}
