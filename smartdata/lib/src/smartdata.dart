@@ -30,13 +30,15 @@ class Smartdata {
     }
   }
 
-  static final Map<dynamic, Generator> _generators = {
+  static final Map<Type, Generator> _generators = {
     int: NumGenerator(),
     num: NumGenerator(),
     String: StringGenerator(),
+    bool: BooleanGenerator(),
+    double: DoubleGenerator(),
   };
 
-  static void put(dynamic key, Generator val) {
+  static void put(Type key, Generator val) {
     _generators.putIfAbsent(key, () => val);
   }
 }

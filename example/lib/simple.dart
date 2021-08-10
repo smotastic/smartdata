@@ -3,10 +3,11 @@ class Simple {
   final String name;
   final num finalNumber;
   final SimpleNested nested;
+  final double dub;
 
   int? number;
 
-  Simple(this.id, this.name, this.finalNumber, this.nested);
+  Simple(this.id, this.name, this.finalNumber, this.nested, this.dub);
 }
 
 class SimpleNested {
