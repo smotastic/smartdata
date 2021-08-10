@@ -1,4 +1,4 @@
 class SmartdataInit {
-  final List<Type> classesToGenerate;
-  const SmartdataInit({required this.classesToGenerate});
+  final List<Type> forClasses;
+  const SmartdataInit({required this.forClasses});
 }

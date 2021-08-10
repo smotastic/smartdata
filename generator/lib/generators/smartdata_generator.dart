@@ -27,7 +27,7 @@ class SmartdataGenerator extends GeneratorForAnnotation<SmartdataInit> {
   dynamic generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
     final config = readConfig(annotation, element);
-    final typeList = config['classesToGenerate'] as List<DartObject>;
+    final typeList = config['forClasses'] as List<DartObject>;
     final build = <Spec>[];
     final classesToGenerate =
         typeList.map((type) => type.toTypeValue()!.element!).toList();

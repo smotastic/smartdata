@@ -4,7 +4,7 @@ import 'package:smartdata_example/simple.dart';
 import 'simple_test.smart.dart';
 import 'package:test/test.dart';
 
-@SmartdataInit(classesToGenerate: [Simple, SimpleNested])
+@SmartdataInit(forClasses: [Simple, SimpleNested])
 void init() {
   $init();
 }

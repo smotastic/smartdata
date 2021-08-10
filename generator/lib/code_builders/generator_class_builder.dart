@@ -49,7 +49,6 @@ Code _buildGenerateMethodBody(ClassElement clazz) {
   builder.addExpression(newInstance);
 
   // remaining fields which were not in the constructor
-  print(classFields);
   classFields.forEach((fieldName, field) {
     final typeOfField = field.type.getDisplayString(withNullability: false);
     final expression = _generateGeneratorExpression(typeOfField);
