@@ -15,7 +15,8 @@ class SimpleGenerator extends Generator {
         Smartdata.I.getSingle<String>(),
         Smartdata.I.getSingle<num>(),
         Smartdata.I.getSingle<SimpleNested>(),
-        Smartdata.I.getSingle<double>());
+        Smartdata.I.getSingle<double>(),
+        Smartdata.I.get<num>(10));
     simple.number = Smartdata.I.getSingle<int>();
     return simple;
   }

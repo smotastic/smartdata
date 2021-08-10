@@ -4,10 +4,12 @@ class Simple {
   final num finalNumber;
   final SimpleNested nested;
   final double dub;
+  final List<num> lotsOf;
 
   int? number;
 
-  Simple(this.id, this.name, this.finalNumber, this.nested, this.dub);
+  Simple(
+      this.id, this.name, this.finalNumber, this.nested, this.dub, this.lotsOf);
 }
 
 class SimpleNested {
