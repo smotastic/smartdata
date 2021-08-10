@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:code_builder/code_builder.dart';
+import 'package:smartdata/smartdata.dart';
 
 Class buildClass(ClassElement clazz) {
   return Class(
@@ -26,34 +27,43 @@ Code _buildGenerateMethodBody(ClassElement clazz) {
   final constructor =
       clazz.constructors.firstWhere((element) => !element.isFactory);
 
+  final classFields = {for (var f in clazz.fields) f.displayName: f};
+
   final positionalArgs = <Expression>[];
   final namedArgs = <String, Expression>{};
   for (final param in constructor.parameters) {
     final typeOfField = param.type.getDisplayString(withNullability: true);
-    if (_mapper.containsKey(typeOfField)) {
-      final methodCall = _mapper[typeOfField]!;
-      if (param.isNamed) {
-        namedArgs.putIfAbsent(param.displayName, () => refer(methodCall));
-      } else {
-        positionalArgs.add(refer(methodCall));
-      }
+
+    final expression = _generateGeneratorExpression(typeOfField);
+    if (param.isNamed) {
+      namedArgs.putIfAbsent(param.displayName, () => expression);
+    } else {
+      positionalArgs.add(expression);
     }
+
+    classFields.remove(param.displayName);
   }
-
-  // for (final field in clazz.fields) {
-  //   final typeOfField = field.type.getDisplayString(withNullability: true);
-  //   if (_mapper.containsKey(typeOfField)) {
-  //     final methodCall = _mapper[typeOfField];
-  //   }
-  // }
-
   final newInstance = refer(clazz.displayName)
       .newInstance(positionalArgs, namedArgs)
       .assignFinal(varName);
   builder.addExpression(newInstance);
 
+  // remaining fields which were not in the constructor
+  print(classFields);
+  classFields.forEach((fieldName, field) {
+    final typeOfField = field.type.getDisplayString(withNullability: false);
+    final expression = _generateGeneratorExpression(typeOfField);
+    builder
+        .addExpression(refer(varName).property(fieldName).assign(expression));
+  });
+
   builder.addExpression(refer(varName).returned);
   return builder.build();
 }
 
-Map<String, String> _mapper = {'String': 'randomString', 'int': 'randomInt'};
+Expression _generateGeneratorExpression(String forType) {
+  return refer('Smartdata')
+      .property('I')
+      .property('getSingle<$forType>')
+      .call([]);
+}

@@ -1,12 +1,16 @@
 class Simple {
   final int id;
   final String name;
+  final num finalNumber;
+  final SimpleNested nested;
 
-  Simple(this.id, this.name);
+  int? number;
+
+  Simple(this.id, this.name, this.finalNumber, this.nested);
 }
 
-class Simple2 {
+class SimpleNested {
   final int id;
 
-  Simple2(this.id);
+  SimpleNested(this.id);
 }
