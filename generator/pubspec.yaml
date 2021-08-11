@@ -1,5 +1,5 @@
 name: smartdata_generator
-description: Smart-Data Generator
+description: SmartData Generator to automatically generate random testdata generators
 version: 0.0.1
 homepage: https://github.com/smotastic/smartdata
 environment:
