@@ -1,7 +1,8 @@
-# Smartstruct - Dart bean mappings - the easy nullsafe way!
+# Smartdata - Creating Random Typesafe Test Data
 
-Code generator for generating type-safe mappers in dart, inspired by https://mapstruct.org/
+Code generator for generating type-safe generators to generate a random amount of test data in dart
 
+- [Overview](#overview)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Examples](#examples)
@@ -9,24 +10,23 @@ Code generator for generating type-safe mappers in dart, inspired by https://map
 
 # Overview
 
-- Add smartstruct as a dependency, and smartstruct_generator as a dev_dependency
-- Create a Mapper class
-- Annotate the class with @mapper
+- Add smartdata as a dependency, and smartdata_generator as a dev_dependency
+- Annotate your method with the @SmartdataInit Annotation and configure the classes for which to generate Datagenerators.
 - Run the build_runner
-- Use the generated Mapper!
+- Use the generated Generator!
 
 # Installation
 
-Add smartstruct as a dependency, and the generator as a dev_dependency.
+Add smartdata as a dependency, and the generator as a dev_dependency.
 
-https://pub.dev/packages/smartstruct
+https://pub.dev/packages/smartdata
 
 ```yaml
 dependencies:
-  smartstruct: [version]
+  smartdata: [version]
 
 dev_dependencies:
-  smartstruct_generator: [version]
+  smartdata_generator: [version]
   # add build runner if not already added
   build_runner:
 ```
@@ -41,6 +41,10 @@ flutter packages pub run build_runner watch
 ```
 
 # Usage
+There are 2 ways, on how to setup Smartdata.
+You can automatically generate Datagenerators with the included _@SmartdataInit_ Annotation or manually create them.
+
+## Automatically generate your generators
 
 Create your beans.
 
@@ -52,217 +56,111 @@ class Dog {
     Dog(this.breed, this.age, this.name);
 }
 ```
+To generate a Datagenerator for this bean, you need to initialize it.
 
 ```dart
-class DogModel {
-    final String breed;
-    final int age;
-    final String name;
-    DogModel(this.breed, this.age, this.name);
+// dog_test.dart
+@SmartdataInit(forClasses: [Dog])
+void init() {
+  $init();
 }
 ```
 
-To generate a mapper for these two beans, you need to create a mapper interface.
-
-```dart
-// dogmapper.dart
-part 'dogmapper.mapper.g.dart';
-
-@Mapper()
-abstract class DogMapper {
-    Dog fromModel(DogModel model);
-}
-```
-
-Once you ran the generator, next to your _dog.mapper.dart_ a _dog.mapper.g.dart_ will be generated.
+Once you ran the generator, next to your _dog_test.dart_ a _dog_test.smart.dart_ will be generated.
 
 ```
 dart run build_runner build
 ```
 
 ```dart
-// dogmapper.mapper.g.dart
-class DogMapperImpl extends DogMapper {
-    @override
-    Dog fromModel(DogModel model) {
-        Dog dog = Dog(model.breed, model.age, model.name);
-        return dog;
-    }
-}
-```
-
-The Mapper supports positional arguments, named arguments and property access via implicit and explicit setters.
-
-## Explicit Field Mapping
-
-If some fields do not match each other, you can add a Mapping Annotation on the method level, to change the behaviour of certain mappings.
-
-```dart
-class Dog {
-    final String name;
-    Dog(this.name);
-}
-class DogModel {
-    final String dogName;
-    DogModel(this.dogName);
-}
-```
-
-```dart
-@Mapper()
-class DogMapper {
-    @Mapping(source: 'dogName', target: 'name')
-    Dog fromModel(DogModel model);
-}
-```
-
-In this case, the field _dogName_ of _DogModel_ will be mapped to the field _name_ of the resulting _Dog_
-
-```dart
-class DogMapperImpl extends DogMapper {
-    @override
-    Dog fromModel(DogModel model) {
-        Dog dog = Dog(model.dogName);
-        return dog;
-    }
-}
-```
-
-## Nested Bean Mapping
-
-Nested beans can be mapped, by defining an additional mapper method for the nested bean.
-
-```dart
-// nestedmapper.dart
-class NestedTarget {
-  final SubNestedTarget subNested;
-  NestedTarget(this.subNested);
-}
-class SubNestedTarget {
-  final String myProperty;
-  SubNestedTarget(this.myProperty);
-}
-
-class NestedSource {
-  final SubNestedSource subNested;
-  NestedSource(this.subNested);
-}
-
-class SubNestedSource {
-  final String myProperty;
-  SubNestedSource(this.myProperty);
-}
-
-@Mapper()
-abstract class NestedMapper {
-  NestedTarget fromModel(NestedSource model);
-
-  SubNestedTarget fromSubClassModel(SubNestedSource model);
-}
-```
-
-Will generate the mapper
-
-```dart
-// nestedmapper.mapper.g.dart
-class NestedMapperImpl extends NestedMapper {
+// dog_test.smart.dart
+class DogGenerator extends Generator {
   @override
-  NestedTarget fromModel(NestedSource model) {
-    final nestedtarget = NestedTarget(fromSubClassModel(model.subNested));
-    return nestedtarget;
-  }
-
-  @override
-  SubNestedTarget fromSubClassModel(SubNestedSource model) {
-    final subnestedtarget = SubNestedTarget(model.myProperty);
-    return subnestedtarget;
+  Simple generateRandom() {
+    final dog = Dog(
+        Smartdata.I.getSingle<String>(),
+        Smartdata.I.getSingle<int>(),
+        Smartdata.I.getSingle<String>()
+    );
+    return dog;
   }
 }
 
-```
-
-## List Support
-Lists will be mapped as new instances of a list, with help of the map method.
-```dart
-class Source {
-  final List<int> intList;
-  final List<SourceEntry> entryList;
-
-  Source(this.intList, this.entryList);
-}
-
-class SourceEntry {
-  final String prop;
-
-  SourceEntry(this.prop);
-}
-
-class Target {
-  final List<int> intList;
-  final List<TargetEntry> entryList;
-
-  Target(this.intList, this.entryList);
-}
-
-class TargetEntry {
-  final String prop;
-
-  TargetEntry(this.prop);
-}
-
-@Mapper()
-abstract class ListMapper {
-  Target fromSource(Source source);
-  TargetEntry fromSourceEntry(SourceEntry source);
+$init() {
+  Smartdata.put(Dog, DogGenerator());
 }
 ```
-Will generate the Mapper
 
+The Generator supports positional arguments, named arguments and property access via implicit and explicit setters.
+
+The generated Class can then be used in your tests.
 ```dart
-class ListMapperImpl extends ListMapper {
-  @override
-  Target fromSource(Source source) {
-    final target = Target(
-      source.intList.map((e) => e).toList(),
-      source.entryList.map(fromSourceEntry).toList());
-    return target;
-  }
+@SmartdataInit(forClasses: [Dog])
+void init() {
+  $init();
+}
 
-  @override
-  TargetEntry fromSourceEntry(SourceEntry source) {
-    final targetentry = TargetEntry(source.prop);
-    return targetentry;
+void main() {
+  setUp(init); // make sure to call the init, to initialize the generator map
+  test('should create lots of random dogs', () {
+    final testData = Smartdata.I.get<Dog>(50);
+    expect(testData.length, 50);
+  });
+}
+```
+## Manually create your generator
+For flexibility or other reasons you can create your own generator.
+Just implement the included _Generator_ class, and add an instance to the Smartdata singleton.
+```dart
+class CustomDogGenerator extends Generator<Dog> {
+  Dog generateRandom() {
+    return Dog('German Shepherd', 1, 'Donald'); // completely random
   }
 }
+
+void init() {
+  // $init() in case you also want to initialize your automatically generated generators
+  Smartdata.put(Dog, CustomDogGenerator());
+}
 ```
-
-## Injectable
-
-The Mapper can be made a lazy injectable singleton, by setting the argument _useInjection_ to true, in the Mapper Interface.
-In this case you also need to add the injectable dependency, as described here. https://pub.dev/packages/injectable
-
-Make sure, that in the Mapper File, you import the injectable dependency, before running the build_runner!
-
+And make sure to call init before running the test.
 ```dart
-// dogmapper.dart
-
-import 'package:injectable/injectable.dart';
-
-@Mapper(useInjectable = true)
-abstract class DogMapper {
-    Dog fromModel(DogModel model);
+void main() {
+  setUp(init); // make sure to call the init, to initialize the generator map
+  test('should create lots of custom random dogs', () {
+    final testData = Smartdata.I.get<Dog>(50);
+    expect(testData.length, 50);
+  });
 }
 ```
 
+# Implementation
+How does it work? Behind the scenes is just a Generator class, which can be implemented by everyone.
 ```dart
-// dogmapper.mapper.g.dart
-@LazySingleton(as: DogMapper)
-class DogMapperImpl extends DogMapper {...}
+abstract class Generator<T> {
+  T generateRandom();
+}
+```
+This package provides default implementations for common primitive types, such as Strings, ints, nums and booleans.
+```dart
+class StringGenerator extends Generator<String> {
+  final _random = Random();
+  final _strings = ['bulbasaur', 'ivysaur', 'venosaur'];
+  @override
+  String generateRandom() {
+    return _strings[_random.nextInt(_strings.length)];
+  }
+}
+```
+These generators are maintained by a static Map, and can be accessed via the Smartdata Singleton.
+```dart
+// generates a list of 10 random strings
+Smartdata.I.get<String>(10);
 ```
 
 # Examples
 
-Please refer to the [example](https://github.com/smotastic/smartstruct/tree/master/example) package, for a list of examples and how to use the Mapper Annotation.
+Please refer to the [example](https://github.com/smotastic/smartdata/tree/master/example) package, for a list of examples and how to use the Smartdata.
 
 You can always run the examples by navigating to the examples package and executing the generator.
 
@@ -273,7 +171,6 @@ $ dart run build_runner build
 ```
 
 # Roadmap
-
-Feel free to open a [Pull Request](https://github.com/smotastic/smartstruct/pulls), if you'd like to contribute.
+Feel free to open a [Pull Request](https://github.com/smotastic/smartdata/pulls), if you'd like to contribute.
 
 Or just open an issue, and i do my level best to deliver.
