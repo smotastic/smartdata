@@ -7,8 +7,7 @@ environment:
 
 publish_to: none
 dependencies:
-  smartdata:
-    path: ../smartdata
+  smartdata: ^0.0.1
 dev_dependencies:
   build_runner: ^2.0.4
   smartdata_generator:

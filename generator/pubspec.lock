@@ -333,9 +333,9 @@ packages:
   smartdata:
     dependency: "direct main"
     description:
-      path: "../smartdata"
-      relative: true
-    source: path
+      name: smartdata
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   source_gen:
     dependency: "direct main"
